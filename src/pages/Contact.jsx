@@ -40,7 +40,7 @@ function Contact() {
         <div className="container">
           <div className="row justify-content-center">
             <div className="col-lg-6">
-              <p className="text-muted lead">
+              <p className="text-muted lead lead-highlight">
                 Have questions? We'd love to hear from you. Get in touch with
                 our friendly team.
               </p>

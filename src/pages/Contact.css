@@ -21,6 +21,14 @@
   line-height: 1.6;
 }
 
+.lead-highlight {
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  max-width: 36rem;
+  margin: 0 auto;
+}
+
 /* Contact Content */
 .contact-content {
   background-color: #ffffff;
@@ -151,7 +159,14 @@
   transform: translateY(-3px);
 }
 
+.social-icon i {
+  display: block;
+  color: inherit;
+  opacity: 1;
+}
+
 .social-icon:hover i {
+  color: #ffffff;
   opacity: 1;
 }
 
