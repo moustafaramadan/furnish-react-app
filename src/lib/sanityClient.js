@@ -14,6 +14,15 @@ const projectId = import.meta.env.VITE_SANITY_PROJECT_ID;
 const dataset = import.meta.env.VITE_SANITY_DATASET || "production";
 const apiVersion = import.meta.env.VITE_SANITY_API_VERSION || "2024-06-01";
 
+// Debug (helps confirm the app is reading from the expected Sanity project/dataset)
+// Will show up only in dev; safe to keep for troubleshooting.
+// eslint-disable-next-line no-console
+console.debug("[SanityClient] projectId/dataset/apiVersion:", {
+  projectId,
+  dataset,
+  apiVersion,
+});
+
 export const isSanityConfigured =
   Boolean(projectId) && projectId !== "your_sanity_project_id";
 
