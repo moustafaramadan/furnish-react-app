@@ -1,0 +1,78 @@
+.newsletter-section {
+  background: linear-gradient(135deg, #f8efe3 0%, #fcfaf7 100%);
+  padding: 3.5rem 0;
+  border-top: 1px solid rgba(184, 137, 77, 0.18);
+}
+
+.newsletter-title {
+  color: var(--primary-color);
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 1.25rem;
+}
+
+.newsletter-input {
+  border: 1px solid rgba(184, 137, 77, 0.35);
+  border-radius: 999px;
+  padding: 0.85rem 1.1rem;
+  font-size: 0.95rem;
+  background-color: rgba(255, 255, 255, 0.85);
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.3s ease;
+}
+
+.newsletter-input:focus {
+  border-color: var(--secondary-color);
+  box-shadow: 0 0 0 0.2rem rgba(184, 137, 77, 0.2);
+  outline: none;
+  transform: translateY(-1px);
+}
+
+.newsletter-input::placeholder {
+  color: #9f948a;
+}
+
+.btn-subscribe {
+  background: linear-gradient(
+    135deg,
+    var(--primary-color),
+    var(--secondary-color)
+  );
+  border: none;
+  padding: 0.85rem 2rem;
+  font-weight: 600;
+  border-radius: 999px;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+  box-shadow: 0 10px 25px rgba(184, 137, 77, 0.2);
+}
+
+.btn-subscribe:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(184, 137, 77, 0.25);
+}
+
+.alert-success {
+  background-color: #efe4d2;
+  border-color: #e1cda8;
+  color: #6d4f26;
+  border-radius: 999px;
+}
+
+@media (max-width: 576px) {
+  .newsletter-section {
+    padding: 1.75rem 0;
+  }
+
+  .newsletter-title {
+    font-size: 1.5rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .btn-subscribe {
+    width: 100%;
+  }
+}

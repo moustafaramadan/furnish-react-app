@@ -1,0 +1,168 @@
+.about-page {
+  background-color: #ffffff;
+}
+
+/* Hero Section */
+.about-hero {
+  background-color: #f6f5f4;
+  border-bottom: 1px solid #ecebe9;
+}
+
+.about-hero h1 {
+  color: #211f1c;
+  font-size: 2.5rem;
+  font-weight: 400;
+  margin-bottom: 1.5rem;
+}
+
+.about-hero .lead {
+  color: #837a6d;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+/* Mission Section */
+.about-mission {
+  background-color: #ffffff;
+}
+
+.about-mission h2 {
+  color: #211f1c;
+  font-size: 1.8rem;
+  font-weight: 400;
+  margin-bottom: 1.5rem;
+}
+
+.about-mission .text-muted {
+  color: #837a6d;
+  font-size: 1rem;
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+}
+
+.about-mission img {
+  border-radius: 4px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Values Section */
+.about-values {
+  background-color: #f6f5f4;
+}
+
+.about-values h2 {
+  color: #211f1c;
+  font-size: 2rem;
+  font-weight: 400;
+  margin-bottom: 2rem;
+}
+
+.value-card {
+  background-color: #ffffff;
+  border-radius: 4px;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.value-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1) !important;
+}
+
+.value-icon {
+  display: flex;
+  justify-content: center;
+}
+
+.value-card h5 {
+  color: #211f1c;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.value-card .text-muted {
+  color: #837a6d;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* Team Section */
+.about-team {
+  background-color: #ffffff;
+}
+
+.about-team h2 {
+  color: #211f1c;
+  font-size: 2rem;
+  font-weight: 400;
+}
+
+.about-team .lead {
+  color: #837a6d;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.team-card {
+  overflow: hidden;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.team-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15) !important;
+}
+
+.team-image {
+  overflow: hidden;
+  height: 300px;
+}
+
+.team-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.team-card:hover .team-image img {
+  transform: scale(1.05);
+}
+
+.team-card .card-body {
+  background-color: #ffffff;
+}
+
+.team-card h5 {
+  color: #211f1c;
+  font-weight: 600;
+}
+
+.team-card .text-muted {
+  color: #837a6d;
+}
+
+@media (max-width: 768px) {
+  .about-hero h1 {
+    font-size: 1.75rem;
+  }
+
+  .about-mission {
+    padding: 2rem 0;
+  }
+
+  .about-mission .col-md-6 {
+    margin-bottom: 2rem;
+  }
+
+  .ms-lg-8 {
+    margin-left: 0 !important;
+  }
+
+  .team-image {
+    height: 250px;
+  }
+}

@@ -1,0 +1,130 @@
+.testimonials-page {
+  background-color: #ffffff;
+}
+
+/* Page Header */
+.testimonials-header {
+  background-color: #f6f5f4;
+  border-bottom: 1px solid #ecebe9;
+}
+
+.testimonials-header h1 {
+  color: #211f1c;
+  font-size: 2.5rem;
+  font-weight: 400;
+  margin-bottom: 1rem;
+}
+
+.testimonials-header .lead {
+  color: #837a6d;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+/* Testimonials Content */
+.testimonials-content {
+  background-color: #ffffff;
+  padding: 3rem 0;
+}
+
+.testimonial-card {
+  background-color: #ffffff;
+  border: 1px solid #ecebe9 !important;
+  border-radius: 4px;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+  height: 100%;
+}
+
+.testimonial-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1) !important;
+}
+
+.rating {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.rating i {
+  font-size: 0.9rem;
+}
+
+.testimonial-text {
+  color: #211f1c;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  font-style: italic;
+  margin-bottom: 0;
+}
+
+.card-footer {
+  background-color: transparent !important;
+  border-top: 1px solid #ecebe9;
+}
+
+.avatar-img {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.author-info {
+  flex: 1;
+}
+
+.author-name {
+  color: #211f1c;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.author-position {
+  color: #837a6d;
+  font-size: 0.85rem;
+}
+
+/* CTA Section */
+.testimonials-cta {
+  background-color: #f6f5f4;
+  border-top: 1px solid #ecebe9;
+}
+
+.testimonials-cta h2 {
+  color: #211f1c;
+  font-size: 2rem;
+  font-weight: 400;
+  margin-bottom: 1rem;
+}
+
+.testimonials-cta .lead {
+  color: #837a6d;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.btn-lg {
+  padding: 0.75rem 2.5rem;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .testimonials-header h1 {
+    font-size: 1.75rem;
+  }
+
+  .testimonials-content {
+    padding: 2rem 0;
+  }
+
+  .col-md-6 {
+    flex: 0 0 100%;
+  }
+
+  .testimonials-cta h2 {
+    font-size: 1.5rem;
+  }
+}
