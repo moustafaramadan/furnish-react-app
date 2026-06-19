@@ -1,17 +1,31 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Swiper from "swiper";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "./HeroSlider.css";
-import gulsen1 from "../../assets/images/slider/gulsen (1).jpg";
-import gulsen2 from "../../assets/images/slider/gulsen (2).jpg";
-import gulsen3 from "../../assets/images/slider/gulsen (3).jpg";
+import { fetchHeroSlides } from "../../lib/sanityClient";
 
 function HeroSlider() {
+  const [slides, setSlides] = useState([]);
+
   useEffect(() => {
-    new Swiper("#swiper-hero", {
+    let isMounted = true;
+
+    fetchHeroSlides().then((items) => {
+      if (isMounted) setSlides(items);
+    });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!slides.length) return undefined;
+
+    const swiper = new Swiper("#swiper-hero", {
       modules: [Navigation, Pagination, Autoplay],
       slidesPerView: 1,
       spaceBetween: 100,
@@ -29,28 +43,9 @@ function HeroSlider() {
         disableOnInteraction: false,
       },
     });
-  }, []);
 
-  const slides = [
-    {
-      id: 1,
-      image: gulsen1,
-      title: "Modern Living",
-      subtitle: "Comfort meets Style",
-    },
-    {
-      id: 2,
-      image: gulsen2,
-      title: "Elegant Design",
-      subtitle: "Crafted with Passion",
-    },
-    {
-      id: 3,
-      image: gulsen3,
-      title: "Premium Quality",
-      subtitle: "Built to Last",
-    },
-  ];
+    return () => swiper.destroy(true, true);
+  }, [slides]);
 
   return (
     <div className="hero-slider-section py-lg-8 pt-6">
@@ -67,7 +62,7 @@ function HeroSlider() {
                     <div className="slide-content position-relative text-center image-effect-container">
                       <img
                         src={slide.image}
-                        alt=""
+                        alt={slide.title || ""}
                         className="hero-slide-image"
                       />
                     </div>

@@ -1,54 +1,29 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import "./Products.css";
+import { fetchProducts, fetchProductsPage } from "../lib/sanityClient";
 
 function Products() {
+  const [products, setProducts] = useState([]);
   const [priceFilter, setPriceFilter] = useState([]);
   const [categoryFilter, setCategoryFilter] = useState([]);
+  const [content, setContent] = useState(null);
 
-  const products = [
-    {
-      id: 1,
-      name: "Modern Chair",
-      price: 89,
-      category: "Office",
-      image: "./assets/images/product-img-1.jpg",
-    },
-    {
-      id: 2,
-      name: "Floor Lamp",
-      price: 45,
-      category: "Decor",
-      image: "./assets/images/product-img-2.jpg",
-    },
-    {
-      id: 3,
-      name: "High Back Boss Chair",
-      price: 199,
-      category: "Office",
-      image: "./assets/images/product-img-5.jpg",
-    },
-    {
-      id: 4,
-      name: "Fancy Metal Clock",
-      price: 65,
-      category: "Decor",
-      image: "./assets/images/product-img-6.jpg",
-    },
-    {
-      id: 5,
-      name: "Comfort Chair",
-      price: 299,
-      category: "Living Room",
-      image: "./assets/images/product-img-3.jpg",
-    },
-    {
-      id: 6,
-      name: "Sofa Bed",
-      price: 599,
-      category: "Bedroom",
-      image: "./assets/images/product-img-1.jpg",
-    },
-  ];
+  useEffect(() => {
+    let isMounted = true;
+
+    Promise.all([fetchProducts(), fetchProductsPage()]).then(
+      ([items, page]) => {
+        if (!isMounted) return;
+        setProducts(items);
+        setContent(page);
+      },
+    );
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const getPriceRange = (price) => {
     if (price < 100) return "under-100";
@@ -71,13 +46,17 @@ function Products() {
   };
 
   const filteredProducts = products.filter((product) => {
-    const priceRange = getPriceRange(product.price);
+    const priceRange = getPriceRange(product.priceValue);
     const priceMatch =
       priceFilter.length === 0 || priceFilter.includes(priceRange);
     const categoryMatch =
       categoryFilter.length === 0 || categoryFilter.includes(product.category);
     return priceMatch && categoryMatch;
   });
+
+  const categories = content?.categories || [];
+
+  if (!content) return null;
 
   return (
     <div className="products-page">
@@ -86,12 +65,8 @@ function Products() {
         <div className="container">
           <div className="row justify-content-center">
             <div className="col-lg-6">
-              <h1 className="display-5 mb-3">Product List</h1>
-              <p className="text-muted lead">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Quaerat ad sint quae sunt, molestiae consectetur vitae! Impedit
-                nulla ea provident quis est eos dolores enim.
-              </p>
+              <h1 className="display-5 mb-3">{content.title}</h1>
+              <p className="text-muted lead">{content.intro}</p>
             </div>
           </div>
         </div>
@@ -103,15 +78,15 @@ function Products() {
           <div className="row">
             {/* Sidebar Filters */}
             <aside className="col-lg-3 mb-4 filters-sidebar">
-              <h3 className="fw-semibold mb-3 h5">Filters</h3>
+              <h3 className="fw-semibold mb-3 h5">{content.filtersTitle}</h3>
 
               {/* Category Filter */}
               <div className="mb-4 bg-light border bg-opacity-50 p-4 filter-section">
                 <h6 className="fw-semibold mb-3 text-xs text-uppercase">
-                  Category
+                  {content.categoryTitle}
                 </h6>
                 <ul className="list-unstyled lh-lg small mb-0">
-                  {["Living Room", "Bedroom", "Office", "Decor"].map((cat) => (
+                  {categories.map((cat) => (
                     <li key={cat}>
                       <div className="form-check">
                         <input
@@ -136,7 +111,7 @@ function Products() {
               {/* Price Filter */}
               <div className="mb-4 bg-light border bg-opacity-50 p-4 filter-section">
                 <h6 className="fw-semibold mb-3 text-xs text-uppercase">
-                  Price
+                  {content.priceTitle}
                 </h6>
                 <div className="form-check">
                   <input
@@ -147,7 +122,7 @@ function Products() {
                     onChange={() => handlePriceChange("under-100")}
                   />
                   <label className="form-check-label" htmlFor="price1">
-                    Under $100
+                    {content.under100Label}
                   </label>
                 </div>
                 <div className="form-check">
@@ -159,7 +134,7 @@ function Products() {
                     onChange={() => handlePriceChange("100-300")}
                   />
                   <label className="form-check-label" htmlFor="price2">
-                    $100-$300
+                    {content.between100And300Label}
                   </label>
                 </div>
                 <div className="form-check">
@@ -171,7 +146,7 @@ function Products() {
                     onChange={() => handlePriceChange("above-300")}
                   />
                   <label className="form-check-label" htmlFor="price3">
-                    Above $300
+                    {content.above300Label}
                   </label>
                 </div>
               </div>
@@ -184,7 +159,7 @@ function Products() {
                   setCategoryFilter([]);
                 }}
               >
-                Reset Filters
+                {content.resetLabel}
               </button>
             </aside>
 
@@ -196,14 +171,16 @@ function Products() {
                     <div key={product.id} className="col-md-4 col-sm-6">
                       <div className="product-item">
                         <div className="product-img-wrapper">
-                          <img
-                            src={product.image}
-                            alt={product.name}
-                            className="img-fluid product-img"
-                          />
+                          <Link to={`/product/${product.id}`}>
+                            <img
+                              src={product.image}
+                              alt={product.name}
+                              className="img-fluid product-img"
+                            />
+                          </Link>
                           <div className="overlay">
                             <button className="btn btn-primary btn-sm">
-                              Add to Cart
+                              {content.addToCartLabel}
                             </button>
                           </div>
                         </div>
@@ -213,7 +190,7 @@ function Products() {
                             {product.category}
                           </p>
                           <p className="product-price fw-bold">
-                            ${product.price.toFixed(2)}
+                            {product.price}
                           </p>
                         </div>
                       </div>
@@ -222,9 +199,7 @@ function Products() {
                 </div>
               ) : (
                 <div className="text-center py-5">
-                  <p className="text-muted">
-                    No products found. Try adjusting your filters.
-                  </p>
+                  <p className="text-muted">{content.emptyText}</p>
                 </div>
               )}
             </div>

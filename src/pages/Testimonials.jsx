@@ -1,56 +1,28 @@
+import { useEffect, useState } from "react";
 import "./Testimonials.css";
+import { fetchTestimonials, fetchTestimonialsPage } from "../lib/sanityClient";
 
 function Testimonials() {
-  const testimonials = [
-    {
-      id: 1,
-      name: "John Deo",
-      position: "CEO, Company Name",
-      text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      avatar: "./assets/images/avatar/avatar-1.jpg",
-      rating: 5,
-    },
-    {
-      id: 2,
-      name: "Sarah Johnson",
-      position: "Design Director",
-      text: "Fantastic furniture! The quality is exceptional and the delivery was fast. Highly recommend Furnish for anyone looking for modern furniture.",
-      avatar: "./assets/images/avatar/avatar-2.jpg",
-      rating: 5,
-    },
-    {
-      id: 3,
-      name: "Michael Chen",
-      position: "Entrepreneur",
-      text: "Great customer service and amazing products. I ordered multiple items for my office and everything was perfect.",
-      avatar: "./assets/images/avatar/avatar-3.jpg",
-      rating: 4,
-    },
-    {
-      id: 4,
-      name: "Emily Rodriguez",
-      position: "Home Owner",
-      text: "The sofa I ordered is absolutely beautiful and so comfortable. It transformed my living room completely!",
-      avatar: "./assets/images/avatar/avatar-1.jpg",
-      rating: 5,
-    },
-    {
-      id: 5,
-      name: "David Brown",
-      position: "Architect",
-      text: "As a professional, I appreciate the attention to detail and modern design of these furniture pieces.",
-      avatar: "./assets/images/avatar/avatar-2.jpg",
-      rating: 5,
-    },
-    {
-      id: 6,
-      name: "Lisa Anderson",
-      position: "Interior Designer",
-      text: "I use Furnish products in all my client projects. The quality and style never disappoint.",
-      avatar: "./assets/images/avatar/avatar-3.jpg",
-      rating: 5,
-    },
-  ];
+  const [testimonials, setTestimonials] = useState([]);
+  const [pageContent, setPageContent] = useState(null);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    Promise.all([fetchTestimonials(), fetchTestimonialsPage()]).then(
+      ([items, page]) => {
+        if (!isMounted) return;
+        setTestimonials(items);
+        setPageContent(page);
+      },
+    );
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  if (!pageContent) return null;
 
   return (
     <div className="testimonials-page">
@@ -59,11 +31,8 @@ function Testimonials() {
         <div className="container">
           <div className="row justify-content-center">
             <div className="col-lg-6">
-              <h1 className="display-5 mb-3">Customer Testimonials</h1>
-              <p className="text-muted lead">
-                See what our satisfied customers have to say about their Furnish
-                experience.
-              </p>
+              <h1 className="display-5 mb-3">{pageContent.title}</h1>
+              <p className="text-muted lead">{pageContent.intro}</p>
             </div>
           </div>
         </div>
@@ -81,7 +50,9 @@ function Testimonials() {
                     {[...Array(5)].map((_, i) => (
                       <i
                         key={i}
-                        className={`bi bi-star-fill ${i < testimonial.rating ? "text-warning" : "text-muted"}`}
+                        className={`bi bi-star-fill ${
+                          i < testimonial.rating ? "text-warning" : "text-muted"
+                        }`}
                       ></i>
                     ))}
                   </div>
@@ -119,12 +90,11 @@ function Testimonials() {
         <div className="container">
           <div className="row justify-content-center">
             <div className="col-lg-6 text-center">
-              <h2 className="mb-4">Share Your Experience</h2>
-              <p className="text-muted lead mb-4">
-                We'd love to hear about your Furnish experience. Share your
-                feedback and help others make informed decisions.
-              </p>
-              <button className="btn btn-primary btn-lg">Write a Review</button>
+              <h2 className="mb-4">{pageContent.ctaTitle}</h2>
+              <p className="text-muted lead mb-4">{pageContent.ctaText}</p>
+              <button className="btn btn-primary btn-lg">
+                {pageContent.ctaButtonLabel}
+              </button>
             </div>
           </div>
         </div>

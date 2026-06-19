@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./Contact.css";
+import { fetchContactPage } from "../lib/sanityClient";
 
 function Contact() {
+  const [content, setContent] = useState(null);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -9,8 +11,19 @@ function Contact() {
     subject: "",
     message: "",
   });
-
   const [submitted, setSubmitted] = useState(false);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    fetchContactPage().then((data) => {
+      if (isMounted) setContent(data);
+    });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -33,34 +46,40 @@ function Contact() {
     setTimeout(() => setSubmitted(false), 3000);
   };
 
+  if (!content) return null;
+
+  const renderLines = (lines = []) =>
+    lines.map((line) => (
+      <span key={line}>
+        {line}
+        <br />
+      </span>
+    ));
+
   return (
     <div className="contact-page">
-      {/* Page Header */}
       <section className="py-lg-8 py-5 text-center contact-header">
         <div className="container">
           <div className="row justify-content-center">
             <div className="col-lg-6">
               <p className="text-muted lead lead-highlight">
-                Have questions? We'd love to hear from you. Get in touch with
-                our friendly team.
+                {content.introText}
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Contact Content */}
       <section className="py-lg-10 py-5 contact-content">
         <div className="container">
           <div className="row g-5">
-            {/* Contact Form */}
             <div className="col-lg-7">
               <div className="contact-form-wrapper">
-                <h2 className="mb-4">Send us a Message</h2>
+                <h2 className="mb-4">{content.formTitle}</h2>
 
                 {submitted && (
                   <div className="alert alert-success mb-4" role="alert">
-                    Thank you for your message! We'll get back to you soon.
+                    {content.successMessage}
                   </div>
                 )}
 
@@ -71,7 +90,7 @@ function Contact() {
                         type="text"
                         name="name"
                         className="form-control form-control-lg"
-                        placeholder="Your Name"
+                        placeholder={content.namePlaceholder}
                         value={formData.name}
                         onChange={handleChange}
                         required
@@ -82,7 +101,7 @@ function Contact() {
                         type="email"
                         name="email"
                         className="form-control form-control-lg"
-                        placeholder="Your Email"
+                        placeholder={content.emailPlaceholder}
                         value={formData.email}
                         onChange={handleChange}
                         required
@@ -95,7 +114,7 @@ function Contact() {
                       type="text"
                       name="subject"
                       className="form-control form-control-lg"
-                      placeholder="Subject"
+                      placeholder={content.subjectPlaceholder}
                       value={formData.subject}
                       onChange={handleChange}
                       required
@@ -106,7 +125,7 @@ function Contact() {
                     <textarea
                       name="message"
                       className="form-control form-control-lg"
-                      placeholder="Your Message"
+                      placeholder={content.messagePlaceholder}
                       rows="6"
                       value={formData.message}
                       onChange={handleChange}
@@ -115,30 +134,23 @@ function Contact() {
                   </div>
 
                   <button type="submit" className="btn btn-primary btn-lg">
-                    Send Message
+                    {content.submitLabel}
                   </button>
                 </form>
               </div>
             </div>
 
-            {/* Contact Information */}
             <div className="col-lg-5">
               <div className="contact-info">
-                <h2 className="mb-5">Contact Information</h2>
+                <h2 className="mb-5">{content.infoTitle}</h2>
 
                 <div className="contact-item mb-5">
                   <div className="contact-icon">
                     <i className="bi bi-geo-alt-fill"></i>
                   </div>
                   <div className="contact-details">
-                    <h6>Address</h6>
-                    <p>
-                      123 Main Street
-                      <br />
-                      New York, NY 10001
-                      <br />
-                      United States
-                    </p>
+                    <h6>{content.addressTitle}</h6>
+                    <p>{renderLines(content.addressLines)}</p>
                   </div>
                 </div>
 
@@ -147,12 +159,8 @@ function Contact() {
                     <i className="bi bi-telephone-fill"></i>
                   </div>
                   <div className="contact-details">
-                    <h6>Phone</h6>
-                    <p>
-                      +1 (555) 123-4576
-                      <br />
-                      +1 (555) 987-6543
-                    </p>
+                    <h6>{content.phoneTitle}</h6>
+                    <p>{renderLines(content.phoneLines)}</p>
                   </div>
                 </div>
 
@@ -161,12 +169,8 @@ function Contact() {
                     <i className="bi bi-envelope-fill"></i>
                   </div>
                   <div className="contact-details">
-                    <h6>Email</h6>
-                    <p>
-                      info@furnish.com
-                      <br />
-                      support@furnish.com
-                    </p>
+                    <h6>{content.emailTitle}</h6>
+                    <p>{renderLines(content.emailLines)}</p>
                   </div>
                 </div>
 
@@ -175,33 +179,24 @@ function Contact() {
                     <i className="bi bi-clock-fill"></i>
                   </div>
                   <div className="contact-details">
-                    <h6>Business Hours</h6>
-                    <p>
-                      Monday - Friday: 9:00 AM - 6:00 PM
-                      <br />
-                      Saturday: 10:00 AM - 4:00 PM
-                      <br />
-                      Sunday: Closed
-                    </p>
+                    <h6>{content.hoursTitle}</h6>
+                    <p>{renderLines(content.hoursLines)}</p>
                   </div>
                 </div>
 
-                {/* Social Links */}
                 <div className="social-links mt-5 pt-3 border-top">
-                  <h6 className="mb-3">Follow Us</h6>
+                  <h6 className="mb-3">{content.socialTitle}</h6>
                   <div className="d-flex gap-3">
-                    <a href="#" className="social-icon">
-                      <i className="bi bi-facebook"></i>
-                    </a>
-                    <a href="#" className="social-icon">
-                      <i className="bi bi-twitter"></i>
-                    </a>
-                    <a href="#" className="social-icon">
-                      <i className="bi bi-instagram"></i>
-                    </a>
-                    <a href="#" className="social-icon">
-                      <i className="bi bi-linkedin"></i>
-                    </a>
+                    {(content.socialLinks || []).map((link) => (
+                      <a
+                        href={link.url || "#"}
+                        className="social-icon"
+                        key={`${link.label}-${link.url}`}
+                        aria-label={link.label}
+                      >
+                        <i className={`bi ${link.icon || "bi-link-45deg"}`}></i>
+                      </a>
+                    ))}
                   </div>
                 </div>
               </div>

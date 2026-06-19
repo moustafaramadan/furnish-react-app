@@ -1,9 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./NewsletterSection.css";
+import { fetchHomePage, getFallbackHomePage } from "../../lib/sanityClient";
 
 function NewsletterSection() {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [content, setContent] = useState(getFallbackHomePage());
+
+  useEffect(() => {
+    let isMounted = true;
+
+    fetchHomePage().then((data) => {
+      if (isMounted) setContent(data);
+    });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -20,12 +34,12 @@ function NewsletterSection() {
         <div className="row justify-content-center">
           <div className="col-lg-8 text-center">
             <h2 className="mb-5 newsletter-title">
-              Subscribe to our Newsletter
+              {content.newsletterTitle}
             </h2>
 
             {submitted && (
               <div className="alert alert-success mb-4" role="alert">
-                Thank you for subscribing!
+                {content.newsletterSuccess}
               </div>
             )}
 
@@ -36,13 +50,13 @@ function NewsletterSection() {
               <input
                 type="email"
                 className="form-control w-lg-50 w-100 newsletter-input"
-                placeholder="Enter your email"
+                placeholder={content.newsletterPlaceholder}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
               <button type="submit" className="btn btn-primary btn-subscribe">
-                Subscribe
+                {content.newsletterButton}
               </button>
             </form>
           </div>

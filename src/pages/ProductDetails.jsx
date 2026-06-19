@@ -1,20 +1,56 @@
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import products from "../data/products";
+import {
+  fetchProductBySlug,
+  fetchProductDetailsPage,
+} from "../lib/sanityClient";
 import "./ProductDetails.css";
 
 function ProductDetails() {
   const { productId } = useParams();
-  const product = products.find(
-    (item) => String(item.id) === String(productId),
-  );
+  const [product, setProduct] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [pageContent, setPageContent] = useState(null);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    Promise.all([
+      fetchProductDetailsPage(),
+      fetchProductBySlug(productId),
+    ]).then(([page, item]) => {
+      if (!isMounted) return;
+      setPageContent(page);
+      setProduct(item);
+      setIsLoading(false);
+    });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [productId]);
+
+  if (isLoading) {
+    return (
+      <section className="product-details-page py-5">
+        <div className="container text-center">
+          <h1 className="h2 mb-3">
+            {pageContent?.loadingLabel || "Loading product..."}
+          </h1>
+        </div>
+      </section>
+    );
+  }
 
   if (!product) {
     return (
       <section className="product-details-page py-5">
         <div className="container text-center">
-          <h1 className="h2 mb-3">Product not found</h1>
+          <h1 className="h2 mb-3">
+            {pageContent?.notFoundLabel || "Product not found"}
+          </h1>
           <Link className="btn btn-primary" to="/">
-            Back to Home
+            {pageContent?.backToHomeLabel || "Back to Home"}
           </Link>
         </div>
       </section>
@@ -31,7 +67,7 @@ function ProductDetails() {
       <div className="container">
         <Link className="product-back-link" to="/">
           <i className="bi bi-arrow-left me-2"></i>
-          Back to products
+          {pageContent?.backToProductsLabel || "Back to products"}
         </Link>
 
         <div className="row g-5 align-items-center mt-2">
@@ -54,7 +90,10 @@ function ProductDetails() {
               </div>
 
               <div className="purchase-box bg-light p-4 border-start border-primary border-4 mb-4">
-                <h2 className="h5 fw-bold mb-3">Purchase Highlights</h2>
+                <h2 className="h5 fw-bold mb-3">
+                  {pageContent?.purchaseHighlightsTitle ||
+                    "Purchase Highlights"}
+                </h2>
                 <ul className="list-unstyled mb-0">
                   {product.details.map((detail) => (
                     <li key={detail} className="mb-2 d-flex align-items-center">
@@ -77,13 +116,13 @@ function ProductDetails() {
                   rel="noreferrer"
                 >
                   <i className="bi bi-whatsapp me-2"></i>
-                  Order via WhatsApp
+                  {pageContent?.orderViaWhatsappLabel || "Order via WhatsApp"}
                 </a>
                 <Link
                   className="btn btn-outline-dark btn-lg px-4"
                   to="/contact"
                 >
-                  Contact Us
+                  {pageContent?.contactUsLabel || "Contact Us"}
                 </Link>
               </div>
             </div>

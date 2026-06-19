@@ -1,0 +1,19 @@
+{
+  "name": "e-commerce",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "sanity dev --host 0.0.0.0",
+    "start": "sanity start",
+    "build": "sanity build",
+    "deploy": "sanity deploy",
+    "seed": "node ./seed/seed.js"
+  },
+  "dependencies": {
+    "@sanity/vision": "^3.68.3",
+    "sanity": "^3.68.3",
+    "styled-components": "^6.1.15"
+  },
+  "devDependencies": {}
+}

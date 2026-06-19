@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper/modules";
@@ -5,30 +6,44 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "./ProductsSection.css";
 import AnimateOnScroll from "../shared/AnimateOnScroll";
-import products from "../../data/products";
+import {
+  fetchHomePage,
+  fetchProducts,
+  getFallbackHomePage,
+} from "../../lib/sanityClient";
 
 function ProductsSection() {
+  const [products, setProducts] = useState([]);
+  const [content, setContent] = useState(getFallbackHomePage());
+
+  useEffect(() => {
+    let isMounted = true;
+
+    Promise.all([fetchProducts({ featuredOnly: true }), fetchHomePage()]).then(
+      ([items, homeContent]) => {
+        if (isMounted) {
+          setProducts(items);
+          setContent(homeContent);
+        }
+      },
+    );
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   return (
     <section className="products-section py-lg-10 mx-3 mx-lg-0 bg-white">
       <div className="container">
         <div className="row justify-content-center mb-md-8 mb-4">
           <div className="col-lg-8 text-center mb-8">
-            <h2 className="display-4 mb-3">Our Favourite Collection</h2>
-            <p className="mb-0 lead">
-              We are inspired by the realities of life today, in which
-              traditional divides between personal and professional space are
-              more fluid.
-            </p>
+            <h2 className="display-4 mb-3">{content.productsTitle}</h2>
+            <p className="mb-0 lead">{content.productsIntro}</p>
           </div>
         </div>
 
         <div className="row">
-          <div className="col-lg-12">
-            <Swiper
-              modules={[Pagination]}
-            </div>
-          </div>
-
           <div className="col-lg-12">
             <Swiper
               modules={[Pagination]}
@@ -89,6 +104,7 @@ function ProductsSection() {
               <div className="swiper-pagination mb-3"></div>
             </Swiper>
           </div>
+        </div>
       </div>
     </section>
   );
