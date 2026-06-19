@@ -92,7 +92,7 @@
 
 .contact-icon {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
   width: 50px;
   height: 50px;
@@ -100,6 +100,11 @@
   border-radius: 50%;
   font-size: 1.5rem;
   color: #d47f31;
+  line-height: 1;
+}
+
+.contact-icon i {
+  display: block;
 }
 
 .contact-details h6 {
@@ -144,6 +149,10 @@
   background-color: #d47f31;
   color: #ffffff;
   transform: translateY(-3px);
+}
+
+.social-icon:hover i {
+  opacity: 1;
 }
 
 /* Map Section */
