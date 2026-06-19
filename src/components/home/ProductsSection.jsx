@@ -26,6 +26,12 @@ function ProductsSection() {
           <div className="col-lg-12">
             <Swiper
               modules={[Pagination]}
+            </div>
+          </div>
+
+          <div className="col-lg-12">
+            <Swiper
+              modules={[Pagination]}
               slidesPerView={3}
               spaceBetween={30}
               speed={400}
@@ -83,7 +89,6 @@ function ProductsSection() {
               <div className="swiper-pagination mb-3"></div>
             </Swiper>
           </div>
-        </div>
       </div>
     </section>
   );

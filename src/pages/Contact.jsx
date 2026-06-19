@@ -209,7 +209,6 @@ function Contact() {
           </div>
         </div>
       </section>
-
     </div>
   );
 }

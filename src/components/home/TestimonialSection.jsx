@@ -20,13 +20,10 @@ function TestimonialSection() {
                   <p className="fst-italic testimonial-text">
                     "Lorem ipsum dolor sit amet, consectetur adipiscing elit,
                     sed do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                    cupidatat non proident, sunt in culpa qui officia deserunt
-                    mollit anim id est laborum."
+                    aliqua.."
                   </p>
                   <div className="lh-1 testimonial-author">
-                    <h4 className="fs-5 mb-1">John Deo</h4>
+                    <h4 className="fs-5 mb-1">Reem Ebrahim</h4>
                     <small className="text-sm">CEO, Company Name</small>
                   </div>
                 </div>
