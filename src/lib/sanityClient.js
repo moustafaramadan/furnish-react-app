@@ -245,17 +245,38 @@ const fallbackTestimonialsPage = {
   ctaButtonLabel: "Write a Review",
 };
 
-async function fetchFirstDocument(type, projection, fallback) {
+function buildTypeAliases() {
+  // When documents are saved with different `_type` names,
+  // we try a set of common aliases to still fetch the correct content.
+  return {
+    homePage: ["homePage", "home", "homePageContent"],
+    productsPage: ["productsPage", "products", "productListPage"],
+    testimonialsPage: [
+      "testimonialsPage",
+      "testimonials",
+      "customerTestimonialsPage",
+    ],
+    productDetailsPage: [
+      "productDetailsPage",
+      "productDetails",
+      "productDetailPage",
+    ],
+  };
+}
+
+async function fetchFirstDocument(types, projection, fallback) {
   if (!isSanityConfigured) return fallback;
+
+  const list = Array.isArray(types) ? types : [types];
 
   try {
     const document = await sanityClient.fetch(
-      `*[_type == $type][0]${projection}`,
-      { type },
+      `*[_type in $types][0]${projection}`,
+      { types: list },
     );
     return document ? { ...fallback, ...document } : fallback;
   } catch (error) {
-    console.error(`Sanity ${type} fetch failed:`, error);
+    console.error(`Sanity fetch failed for types:`, list, error);
     return fallback;
   }
 }
@@ -283,8 +304,9 @@ export async function fetchSiteSettings() {
 }
 
 export async function fetchHomePage() {
+  const aliases = buildTypeAliases();
   return fetchFirstDocument(
-    "homePage",
+    aliases.homePage,
     `{productsTitle,productsIntro,newsletterTitle,newsletterPlaceholder,newsletterButton,newsletterSuccess}`,
     fallbackHomePage,
   );
@@ -335,8 +357,9 @@ export async function fetchContactPage() {
 }
 
 export async function fetchProductsPage() {
+  const aliases = buildTypeAliases();
   return fetchFirstDocument(
-    "productsPage",
+    aliases.productsPage,
     `{
       title,
       intro,
@@ -356,8 +379,9 @@ export async function fetchProductsPage() {
 }
 
 export async function fetchTestimonialsPage() {
+  const aliases = buildTypeAliases();
   return fetchFirstDocument(
-    "testimonialsPage",
+    aliases.testimonialsPage,
     `{title,intro,ctaTitle,ctaText,ctaButtonLabel}`,
     fallbackTestimonialsPage,
   );
@@ -374,8 +398,9 @@ const fallbackProductDetailsPage = {
 };
 
 export async function fetchProductDetailsPage() {
+  const aliases = buildTypeAliases();
   return fetchFirstDocument(
-    "productDetailsPage",
+    aliases.productDetailsPage,
     `{
       loadingLabel,
       notFoundLabel,
