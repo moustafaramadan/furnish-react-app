@@ -1,7 +1,6 @@
 import HeroSlider from "../components/home/HeroSlider";
 import ProductsSection from "../components/home/ProductsSection";
 import TestimonialSection from "../components/home/TestimonialSection";
-import NewsletterSection from "../components/home/NewsletterSection";
 
 function Home() {
   return (
@@ -9,7 +8,6 @@ function Home() {
       <HeroSlider />
       <ProductsSection />
       <TestimonialSection />
-      <NewsletterSection />
     </div>
   );
 }

@@ -43,8 +43,6 @@ function Footer() {
           </div>
         </div>
 
-        <hr className="border-secondary" />
-
         <div className="row align-items-center">
           <div className="col-md-6 text-muted">
             <p className="mb-0">

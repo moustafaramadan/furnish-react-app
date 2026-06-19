@@ -40,7 +40,6 @@ function Contact() {
         <div className="container">
           <div className="row justify-content-center">
             <div className="col-lg-6">
-              <h1 className="display-5 mb-3">Contact Us</h1>
               <p className="text-muted lead">
                 Have questions? We'd love to hear from you. Get in touch with
                 our friendly team.
@@ -89,17 +88,6 @@ function Contact() {
                         required
                       />
                     </div>
-                  </div>
-
-                  <div className="mb-3">
-                    <input
-                      type="tel"
-                      name="phone"
-                      className="form-control form-control-lg"
-                      placeholder="Phone Number"
-                      value={formData.phone}
-                      onChange={handleChange}
-                    />
                   </div>
 
                   <div className="mb-3">
