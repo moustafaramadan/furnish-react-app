@@ -67,14 +67,37 @@
 @media (max-width: 768px) {
   .testimonial-section {
     min-height: 300px;
-    padding: 2rem;
+    padding: 1.5rem 0;
+  }
+
+  .testimonial-section .container {
+    max-width: 100%;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .testimonial-card {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    box-shadow: none;
+    border-radius: 0;
   }
 
   .testimonial-card .card-body {
-    padding: 1.5rem;
+    padding: 1.25rem;
   }
 
   .testimonial-text {
-    font-size: 1rem;
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .testimonial-author h4 {
+    font-size: 0.98rem;
+  }
+
+  .testimonial-author small {
+    font-size: 0.8rem;
   }
 }
